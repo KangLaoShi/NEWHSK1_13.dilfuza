@@ -12,8 +12,18 @@
     <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
     
-    <!-- Babel (Pinned to a highly stable classic version 7.12.9 to prevent 'import' statement errors) -->
-    <script src="https://unpkg.com/@babel/standalone@7.12.9/babel.min.js"></script>
+    <!-- Babel for in-browser JSX compilation -->
+    <script src="https://unpkg.com/@babel/standalone@7.23.10/babel.min.js"></script>
+
+    <!-- Configure Babel to use classic runtime, completely avoiding 'import' errors -->
+    <script>
+        Babel.registerPreset('react-classic', {
+            presets: [
+                [Babel.availablePresets['env']],
+                [Babel.availablePresets['react'], { runtime: 'classic' }]
+            ]
+        });
+    </script>
 
     <style>
         body { margin: 0; padding: 0; font-family: sans-serif; }
@@ -26,10 +36,8 @@
 <body>
     <div id="root"></div>
 
-    <script type="text/babel">
-        /** @jsx React.createElement */
-        /** @jsxFrag React.Fragment */
-
+    <!-- The data-presets attribute is CRITICAL for Babel to compile the code -->
+    <script type="text/babel" data-presets="react-classic">
         const { useState, useEffect } = React;
 
         // SVG Icons replacing lucide-react
